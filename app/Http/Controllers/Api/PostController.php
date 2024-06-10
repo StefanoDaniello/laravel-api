@@ -12,8 +12,8 @@ class PostController extends Controller
     {
      //quando usamo la funzione paginate i dati saranno in data 
     //  $posts=Post::paginate(5);
-    // $posts=Post::all();
-    $posts = Post::with('category')->paginate(5);//or all()
+    $posts=Post::all();
+    // $posts = Post::with('category')->paginate(5);//or all()
      //dd($posts);
       return response()->json([
         'success' => true,
