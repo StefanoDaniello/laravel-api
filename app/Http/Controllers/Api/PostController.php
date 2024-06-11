@@ -12,11 +12,12 @@ class PostController extends Controller
     {
      //quando usamo la funzione paginate i dati saranno in data 
     //  $posts=Post::paginate(5);
-    $posts=Post::all();
-    // $posts = Post::with('category')->paginate(5);//or all()
+    // $posts=Post::all();
+    $posts = Post::with('category')->get();//or get()
      //dd($posts);
       return response()->json([
-        'success' => true,
+        'status' => 'success',
+        'message' => 'OK',
         'results' => $posts
       ]);
     }
@@ -26,14 +27,17 @@ class PostController extends Controller
         $post = Post::where('slug', $slug)->with('category', 'tags')->first();
         if($post){
             return response()->json([
-                'success' => true,
+                'status' => 'success',
+                'message' => 'OK',
                 'results' => $post
-            ]);
+                // uso un codice 200 per indicare ad axios
+                // che la chiamata e andata a buon fine 
+            ],200);
         }else{
             return response()->json([
-                'success' => false,
-                'results' => 'Post not found'
-            ]);
+                'status' => 'error',	
+                'message' => 'Error'
+            ],404);
         }
        
     }
