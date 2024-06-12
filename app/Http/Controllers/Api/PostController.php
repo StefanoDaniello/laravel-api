@@ -5,21 +5,35 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Post;
-
+use Illuminate\Database\Eloquent\Builder;
 class PostController extends Controller
 {
-    public function index()
+    public function index(Request $request)	
     {
-     //quando usamo la funzione paginate i dati saranno in data 
-    //  $posts=Post::paginate(5);
-    // $posts=Post::all();
-    $posts = Post::with('category')->paginate(6);//or get()
-     //dd($posts);
-      return response()->json([
-        'status' => 'success',
-        'message' => 'OK',
-        'results' => $posts
-      ]);
+      
+        // if($request->query('category')){
+        //     $posts = Post::with('category')->where('category_id', $request->query('category'))->paginate(6);//or get()
+        // }else{
+        //     $posts = Post::with('category')->paginate(6);
+        // }
+
+        //metodo alternativo
+        $category=$request->query('category');
+        $posts = Post::with('category')->when($category, function (Builder $query, string $category){
+            $query->where('category_id', $category);
+        })->paginate(6);
+
+
+        //quando usamo la funzione paginate i dati saranno in data 
+        //  $posts=Post::paginate(5);
+        // $posts=Post::all();
+        // $posts = Post::with('category')->paginate(6);//or get()
+        //dd($posts);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'OK',
+            'results' => $posts
+        ]);
     }
     public function show($slug)
     {
