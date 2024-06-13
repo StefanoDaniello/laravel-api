@@ -1,7 +1,7 @@
-<h1>Ciao Amministratore!</h1>
+<h1>Ciao Amministratore !</h1>
 <p>
-    Hai ricevutto un nuovo messaggio dal tuo sito <br>
-    <strong>Nome:</strong><span>{{$leadr->name}}</span><br>
-    <strong>Email:</strong><span>{{$leadr->email}}</span><br>
-    <strong>Messaggio:</strong><span>{{$leadr->message}}</span>
+    Hai ricevuto un nuovo messaggio dal tuo sito<br>
+    <strong>Nome:</strong><span>{{$lead->name}}</span><br>
+    <strong>Email:</strong><span>{{$lead->address}}</span><br>
+    <strong>Messaggio:</strong><span>{{$lead->message}}</span><br>
 </p>
