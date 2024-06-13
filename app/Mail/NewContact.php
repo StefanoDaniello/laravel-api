@@ -12,6 +12,9 @@ use Illuminate\Queue\SerializesModels;
 class NewContact extends Mailable
 {
     use Queueable, SerializesModels;
+
+    //variabile che memorizza i dati del form , 
+    //utilizzando public potremmo accedervi dalla view 
     public $lead;
     /**
      * Create a new message instance.
@@ -24,10 +27,14 @@ class NewContact extends Mailable
     /**
      * Get the message envelope.
      */
+
+
     public function envelope(): Envelope
     {
         return new Envelope(
+            //mesaggio da inviare all'utente
             subject: 'New Contact',
+            //destinatario
             replyTo: $this->lead->address
         );
     }
@@ -38,6 +45,7 @@ class NewContact extends Mailable
     public function content(): Content
     {
         return new Content(
+            //contenuto dell' email da inviare
             view: 'mails.new-contact',
         );
     }
