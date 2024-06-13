@@ -6,25 +6,31 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Lead;
 
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
 use App\Mail\NewContact;
+
 class LeadController extends Controller
 {
-
     public function store(Request $request)
     {
-        $data= $request->all();
+        $data = $request->all();
+        // validiamo i dati "a mano" per poter gestire la risposta
         $validator = Validator::make($data, [
             'name' => 'required',
-            'email' => 'required|email',
+            'address' => 'required|email',
             'message' => 'required'
         ]);
+
         if ($validator->fails()) {
             return response()->json([
-                'success' => false,
+                'status' => 'error',
+                // 'message' => $validator->errors(),
+                // la funzione errors() della classe Validator resituisce un array
+                // in cui la chiave è il campo soggetto a validazione
+                // e il valore è un array di messaggi di errore
                 'errors' => $validator->errors()
-            ], 422);
+            ], 401);
         }
 
         $lead = new Lead();
@@ -32,5 +38,10 @@ class LeadController extends Controller
         $lead->save();
 
         Mail::to('info@boolpress.com')->send(new NewContact($lead));
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Ok',
+        ], 200);
     }
 }
