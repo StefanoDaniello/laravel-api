@@ -33,7 +33,7 @@ class PostController extends Controller
             'status' => 'success',
             'message' => 'OK',
             'results' => $posts
-        ]);
+        ],200);
     }
     public function show($slug)
     {
